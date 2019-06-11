@@ -5,7 +5,7 @@ from mxnet.gluon import nn
 
 
 class MatchPyramid(nn.Block):
-    def __init__(self, vocab_len, reft_len, right_len, embe_size=300, psize=[10, 10], kernel_num=[3, 5], kernel_size=[3, 3], prefix=None):
+    def __init__(self, vocab_len, reft_len, right_len, embe_size=300, psize=[10, 10], kernel_num=[3, 5], kernel_size=[3, 3], output_num=2, prefix=None):
         super(MatchPyramid, self).__init__(prefix=prefix)
         self.embed_left = nn.Embedding(vocab_len, embe_size)
         self.embed_right = nn.Embedding(vocab_len, embe_size)
@@ -23,7 +23,7 @@ class MatchPyramid(nn.Block):
         self.output_layer = nn.HybridSequential()
         with self.output_layer.name_scope():
             self.output_layer.add(nn.Dropout(.5))
-            self.output_layer.add(nn.Dense(2))
+            self.output_layer.add(nn.Dense(output_num))
 
     def forward(self, x_left, x_right):
         x_left = self.embed_left(x_left)
